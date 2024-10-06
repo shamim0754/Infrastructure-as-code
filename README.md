@@ -23,7 +23,8 @@ block_type "label_1" "label_2" {
   nested_block {
     parameter = value
   }
-}```
+}
+```
 
 ##Terraform Block
 The terraform  block contains Terraform settings. for example
@@ -36,6 +37,7 @@ The terraform  block contains Terraform settings. for example
       version = "version"
     }
     ```
+    
     i.`local_name` . its unique identifier within this module(module-specific). every provider has a preferred local name(we recommend using a provider's preferred local name, which is usually the same as the "type" portion of its source address), which it uses as a prefix for all of its resource types. (For example, resources from hashicorp/aws all begin with aws, like aws_instance or aws_security_group.)
 
     *** it's sometimes necessary to use two providers with the same preferred local name in the same module, usually when the providers are named after a generic infrastructure type. Terraform requires unique local names for each provider in a module, so you'll need to use a non-preferred name for at least one of them.
