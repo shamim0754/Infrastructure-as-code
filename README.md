@@ -26,7 +26,7 @@ block_type "label_1" "label_2" {
 }
 ```
 
-##Terraform Block
+# Terraform Block
 The terraform  block contains Terraform settings. for example
 1. `required_version`. Defines the Terraform version requirements
 3. `backend`: Configures the location where the Terraform state is stored.
@@ -37,7 +37,7 @@ The terraform  block contains Terraform settings. for example
       version = "version"
     }
     ```
-    
+
     i.`local_name` . its unique identifier within this module(module-specific). every provider has a preferred local name(we recommend using a provider's preferred local name, which is usually the same as the "type" portion of its source address), which it uses as a prefix for all of its resource types. (For example, resources from hashicorp/aws all begin with aws, like aws_instance or aws_security_group.)
 
     *** it's sometimes necessary to use two providers with the same preferred local name in the same module, usually when the providers are named after a generic infrastructure type. Terraform requires unique local names for each provider in a module, so you'll need to use a non-preferred name for at least one of them.
@@ -50,11 +50,11 @@ The terraform  block contains Terraform settings. for example
 
     ** `NAMESPACE`: An organizational namespace within the specified registry. For the public Terraform Registry(registry.terraform.io) and for HCP Terraform's private registry, this represents the organization that publishes the provider. This field may have other meanings for other registry hosts.
 
-    ** Type: A short name for the platform or system the provider manages. Must be unique within a particular namespace on a particular registry host.
+    ** `Type`: A short name for the platform or system the provider manages. Must be unique within a particular namespace on a particular registry host.
 
     iii. `version` define source version (Optional) . default recent version
 
-##Provider Block
+# Provider Block
 configures the specified provider
 
 ```
@@ -83,7 +83,7 @@ provider "azurerm" {
   features {}
 }
 
-##Resource Block
+# Resource Block
 Define components of your infrastructure. A resource might be a physical or virtual component such as an EC2 instance, or it can be a logical resource such as a Heroku application.
 
 ```
@@ -98,3 +98,7 @@ Together, the resource type and resource name form a unique `ID` for the resourc
 
 2. Meta-arguments
   i. `provider` : specify your provider by the form `<PROVIDER NAME>.<ALIAS> `. if no specify then it use default provider (which one is no `alias` property). Documentation link [Link](https://developer.hashicorp.com/terraform/language/resources/syntax)
+
+
+# Life cycle of terraform project
+1. `terraform init` : Initializing a configuration directory downloads and installs the providers defined in the configuration
