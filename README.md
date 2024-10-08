@@ -78,9 +78,11 @@ provider "google" {
   project = "my-gcp-project"
   region  = "us-central1"
   credentials = file("path-to-credentials.json")
-}```
+}
+```
 
 For Azure
+
 ```
 provider "azurerm" {
   features {}
