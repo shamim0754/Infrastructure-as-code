@@ -1,0 +1,8 @@
+.terraform
+.terraform.lock.hcl
+.terraform.tfstate
+.terraform.tfstate.backup
+./module/aws_instance/.terraform
+./module/aws_instance/.terraform.tfstate
+./module/aws_instance/.terraform.tfstate.backup
+./module/aws_instance/.terraform.lock.hcl

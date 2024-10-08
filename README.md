@@ -72,16 +72,20 @@ For aws :
 4.`version`:  which we no longer recommend depricate (use provider requirements instead)   
 
 For google : 
+
+```
 provider "google" {
   project = "my-gcp-project"
   region  = "us-central1"
   credentials = file("path-to-credentials.json")
-}
+}```
 
-For azaure
+For Azure
+```
 provider "azurerm" {
   features {}
 }
+```
 
 # Resource Block
 Define components of your infrastructure. A resource might be a physical or virtual component such as an EC2 instance, or it can be a logical resource such as a Heroku application.
@@ -100,5 +104,79 @@ Together, the resource type and resource name form a unique `ID` for the resourc
   i. `provider` : specify your provider by the form `<PROVIDER NAME>.<ALIAS> `. if no specify then it use default provider (which one is no `alias` property). Documentation link [Link](https://developer.hashicorp.com/terraform/language/resources/syntax)
 
 
-# Life cycle of terraform project
-1. `terraform init` : Initializing a configuration directory downloads and installs the providers defined in the configuration
+# Life cycle of terraform
+1. `terraform init` : Initializing a configuration directory downloads and installs the providers defined in the configuration. Its `mandatory`
+2. `terraform fmt` : Automatically updates/format(fmt) configurations in the current directory for readability and consistency.
+3. `terraform validate`: Make sure your configuration is syntactically valid and internally consistent
+4. `terraform plan`: to preview the changes that will be made to your infrastructure
+5. `terraform apply`: Apply the configuration to your infrastructure. its `mandatory`
+6. `terraform show` : After apply, Terraform wrote data into a file called `terraform.tfstate`. It track which resources it manages so that it can update or destroy those resources going forward and often contains sensitive information,so you must store your state file securely. This command inspect/show the current state. 
+  For storing state file remotely you can use following 
+  1. `HCP Terraform/ Terraform enterprise`. It is recommendate . https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-migrate
+  2. `Third party backend remote` : 
+  https://developer.hashicorp.com/terraform/language/backend/configuration
+7.`terraform state` : for advanced state management .for example `terraform state list` list the resource of your project.  
+
+
+# Create first terraform project
+
+It will create single ec2 instance. Create folder->main.tf then add following content
+
+```
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.16"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  region = "ca-central-1"
+}
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-00498a47f0a5d4232"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "ExampleAppServerInstance"
+  }
+}
+
+```
+
+1. `AMI(Amazon machine image)` : check list ec2->Images->AMI
+2. `instance_type`: Define instance type
+3. `count`: Define how many instance you need
+
+  Aws instance doc
+  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
+
+For Execution use `mandatory` command  
+
+# Terrafrom module 
+Modules are the main way to package and `reuse` resource configurations with Terraform.
+
+In the structure:
+`Root module`: The main.tf in the root folder contains the top-level configurations.
+`Submodule`: The modules/aws_instance folder contains the reusable EC2 instance module.
+
+From `Root module`  calls other modules by following syntax
+
+```
+module "<module_name>"{
+  source ="<path for submodule main.tf>"
+}
+```
+1. Move `main.tf` content to `module->aws_instance->main.tf` to create `submodule`
+2. update main.tf with following content
+```
+module "ec2" {
+  source = "./module/aws_instance"
+}
+````
+
